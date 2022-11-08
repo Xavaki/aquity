@@ -15,6 +15,6 @@ class get_district_polygons(APIView):
     authentication_classes = []
     permission_classes = []
     def get(self, request):
-        with open('./0301100100_UNITATS_ADM_POLIGONS.json') as f:
+        with open('./0301100100_UNITATS_ADM_POLIGONS_TRANSFORMED.json') as f:
             response = json.load(f)
         return Response(response)

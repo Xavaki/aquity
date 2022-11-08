@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Map, TileLayer, GeoJSON } from 'react-leaflet';
+import { Map, TileLayer, GeoJSON, coordsToLatLng } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import callApi from './api';
@@ -8,23 +8,12 @@ import callApi from './api';
 const MapView = ({ setOfficesLoading }) => {
 
     const data = () => {
-        var exFeature = polygonsData.features[10]
-        console.log(exFeature);
-        return <GeoJSON key={exFeature.key} data={{
-            "type": "Feature",
-            "properties": {
-                "name": "Coors Field",
-                "amenity": "Baseball Stadium",
-                "popupContent": "This is where the Rockies play!"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    4591064.2891000006,
-                    431874.99490000028,
-                ],
-            }
-        }} />
+        return <GeoJSON
+            key={0}
+            data={polygonsData}
+        // filter={f => f.id === 2}
+        // onEachFeature={(f, l) => console.log(f)}
+        />
     }
 
     const mapRef = useRef();
