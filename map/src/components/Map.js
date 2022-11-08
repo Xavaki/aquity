@@ -11,7 +11,7 @@ const MapView = ({ setOfficesLoading }) => {
         return <GeoJSON
             key={0}
             data={polygonsData}
-        // filter={f => f.id === 2}
+            filter={f => f.properties.SCONJ_DESC === "Districte"}
         // onEachFeature={(f, l) => console.log(f)}
         />
     }
