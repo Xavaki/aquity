@@ -5,15 +5,21 @@ import L from 'leaflet';
 import callApi from './api';
 
 
+const palette = ['#19439c', '#4f7cb6', '#61a0c4', '#5ea9c6', '#4898bc', '#b1d2b2', '#71aa8b', '#3f886b', '#176d51', '#00563c']
+
+const District = ({ id, geojson, demodata, style }) => {
+    return <GeoJSON
+        key={id}
+        data={geojson}
+        color={palette[id]}
+    />
+}
+
 const MapView = ({ setOfficesLoading }) => {
 
     const data = () => {
-        return <GeoJSON
-            key={0}
-            data={polygonsData}
-            filter={f => f.properties.SCONJ_DESC === "Districte"}
-        // onEachFeature={(f, l) => console.log(f)}
-        />
+        let districts = polygonsData.features.filter(f => f.properties.SCONJ_DESC === "Districte")
+        return districts.map((distGeoJson, id) => <District geojson={distGeoJson} id={id} />)
     }
 
     const mapRef = useRef();
@@ -46,8 +52,8 @@ const MapView = ({ setOfficesLoading }) => {
                 zoomControl={false}
             >
                 <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-                    url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                    attribution='<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url='https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=Py8yDz4u4TMlCiAXlJOh9DCN06nX8CoNg3KXUJeF7zVUygcVdfVcFyUvqYGFI74J'
                 />
                 {apiLoaded && data()}
             </Map>
@@ -56,3 +62,5 @@ const MapView = ({ setOfficesLoading }) => {
 }
 
 export default MapView;
+
+// https://leaflet-extras.github.io/leaflet-providers/preview/
