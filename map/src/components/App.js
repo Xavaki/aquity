@@ -6,8 +6,16 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 import NavBar from './NavBar';
 import MapView from './Map';
 
-
 let theme = createTheme({
+  components: {
+    MuiDrawer: {
+      styleOverrides: {
+        modal: {
+          inset: false
+        }
+      }
+    }
+  },
   palette: {
     primary: {
       main: "#0899c2"

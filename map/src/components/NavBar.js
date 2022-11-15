@@ -20,6 +20,7 @@ const NavBar = ({ officesLoading }) => {
             <Toolbar>
                 <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
                     <Typography variant='h5' sx={{ color: "rgb(112,112,112)", mt: 1 }}>Aquity (logo)</Typography>
+                    <Typography variant='h5' sx={{ color: "rgb(112,112,112)", mt: 1 }}>AB (logo)</Typography>
                 </div>
             </Toolbar>
             {officesLoading && <LinearProgress />}

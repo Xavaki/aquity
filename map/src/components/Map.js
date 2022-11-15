@@ -3,28 +3,44 @@ import { Map, TileLayer, GeoJSON, coordsToLatLng } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import callApi from './api';
+import DemoDrawer from './DemoDrawer'
 
 
 const palette = ['#19439c', '#4f7cb6', '#61a0c4', '#5ea9c6', '#4898bc', '#b1d2b2', '#71aa8b', '#3f886b', '#176d51', '#00563c']
 
-const District = ({ id, geojson, demodata, style }) => {
+const District = ({ id, geojson, demodata, style, onClick }) => {
     return <GeoJSON
         key={id}
         data={geojson}
         color={palette[id]}
+        onClick={() => onClick()}
     />
 }
 
 const MapView = ({ setOfficesLoading }) => {
 
+    const [drawerState, setDrawerState] = useState(false);
+
+    const toggleDrawer = (open) => {
+        console.log(open)
+        setDrawerState(open);
+    };
     const data = () => {
-        let districts = polygonsData.features.filter(f => f.properties.SCONJ_DESC === "Districte")
-        return districts.map((distGeoJson, id) => <District geojson={distGeoJson} id={id} />)
+        return districts.map((distGeoJson, id) => <District
+            geojson={distGeoJson}
+            id={id}
+            onClick={() => {
+                toggleDrawer(true)
+                console.log("asda", drawerState)
+                setSelectedDistrict(id)
+            }}
+        />)
     }
 
     const mapRef = useRef();
     const [isLoading, setLoading] = useState(false);
-    const [polygonsData, setPolygonsData] = useState([]);
+    const [districts, setDistricts] = useState([])
+    const [selectedDistrict, setSelectedDistrict] = useState(null)
     const [apiLoaded, setApiLoaded] = useState(false);
     useEffect(() => {
         if (!isLoading) { setLoading(true) }
@@ -32,7 +48,7 @@ const MapView = ({ setOfficesLoading }) => {
 
             const fetchData = async () => {
                 const APIData = await callApi("api/polygons/", "GET")
-                setPolygonsData(APIData)
+                setDistricts(APIData.features.filter(f => f.properties.SCONJ_DESC === "Districte"))
                 setLoading(false)
                 setOfficesLoading(false)
                 setApiLoaded(true);
@@ -43,6 +59,7 @@ const MapView = ({ setOfficesLoading }) => {
 
     return (
         <>
+            {selectedDistrict !== null && <DemoDrawer districtDemoInfo={districts[selectedDistrict]} drawerState={drawerState} toggleDrawer={toggleDrawer} />}
             <Map
                 ref={mapRef}
                 style={{ width: "100%", height: "100%" }}
