@@ -3,8 +3,7 @@ import { Map, TileLayer, GeoJSON, coordsToLatLng } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import callApi from './api';
-import DemoDrawer from './DemoDrawer'
-
+import DistrictInfo from './DistrictInfo';
 
 const palette = ['#19439c', '#4f7cb6', '#61a0c4', '#5ea9c6', '#4898bc', '#b1d2b2', '#71aa8b', '#3f886b', '#176d51', '#00563c']
 
@@ -23,32 +22,33 @@ const distIds = {
 
 
 const District = ({ id, data, demodata, style, onClick }) => {
-    console.log(data)
     return <GeoJSON
         key={id}
         data={data}
-        color={palette[id]}
+        color={data.properties.info.color}
         onClick={() => onClick()}
     />
 }
 
 const MapView = ({ setOfficesLoading }) => {
 
-    const [drawerState, setDrawerState] = useState(false);
+    const [districtClicked, setDistrictClicked] = useState(false);
 
-    const toggleDrawer = (open) => {
-        setDrawerState(open);
+    const clickDistrict = (open) => {
+        setDistrictClicked(open);
     };
+
     const data = () => {
         districts.forEach(d => {
-            d.properties["NOM_NORMALITZAT"] = distIds[d.id]
             d.properties.info = districtsInfo[d.id]
+            d.properties.info["NOM_NORMALITZAT"] = distIds[d.id]
+            d.properties.info["color"] = palette[parseInt(d.id) - 1]
         })
         return districts.map((distData, id) => <District
             data={distData}
             id={id}
             onClick={() => {
-                toggleDrawer(true)
+                clickDistrict(true)
                 setSelectedDistrict(id)
             }}
         />)
@@ -78,7 +78,7 @@ const MapView = ({ setOfficesLoading }) => {
 
     return (
         <>
-            {selectedDistrict !== null && <DemoDrawer districtDemoInfo={districts[selectedDistrict]} drawerState={drawerState} toggleDrawer={toggleDrawer} />}
+            {selectedDistrict !== null && <DistrictInfo info={districts[selectedDistrict].properties.info} districtClicked={districtClicked} clickDistrict={clickDistrict} />}
             <Map
                 ref={mapRef}
                 style={{ width: "100%", height: "100%" }}
