@@ -26,6 +26,8 @@ const District = ({ id, data, demodata, style, onClick }) => {
         key={id}
         data={data}
         color={data.properties.info.color}
+        weight={1}
+        // fillOpacity={}
         onClick={() => onClick()}
     />
 }
