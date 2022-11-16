@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('api/polygons/', views.get_district_polygons.as_view()),
+    path('api/data/', views.get_district_data.as_view()),
 ]

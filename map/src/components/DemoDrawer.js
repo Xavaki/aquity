@@ -12,7 +12,7 @@ export default function DemoDrawer({ districtDemoInfo, drawerState, toggleDrawer
             role="presentation"
         >
             <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
-                <Typography variant='h4'>{districtDemoInfo.properties.NOM}</Typography>
+                <Typography variant='h4'>{districtDemoInfo.properties.NOM_NORMALITZAT}</Typography>
                 <CloseRoundedIcon onClick={() => toggleDrawer(false)} sx={{ color: "rgb(112,112,112)" }}>x</CloseRoundedIcon>
             </div>
         </Box>

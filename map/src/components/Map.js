@@ -8,10 +8,25 @@ import DemoDrawer from './DemoDrawer'
 
 const palette = ['#19439c', '#4f7cb6', '#61a0c4', '#5ea9c6', '#4898bc', '#b1d2b2', '#71aa8b', '#3f886b', '#176d51', '#00563c']
 
-const District = ({ id, geojson, demodata, style, onClick }) => {
+const distIds = {
+    1: 'Ciutat Vella',
+    2: 'Eixample',
+    3: 'Sants-Montjuïc',
+    4: 'Les Corts',
+    5: 'Sarrià-Sant Gervasi',
+    6: 'Gràcia',
+    7: 'Horta-Guinardó',
+    8: 'Nou Barris',
+    9: 'Sant Andreu',
+    10: 'Sant Martí',
+}
+
+
+const District = ({ id, data, demodata, style, onClick }) => {
+    console.log(data)
     return <GeoJSON
         key={id}
-        data={geojson}
+        data={data}
         color={palette[id]}
         onClick={() => onClick()}
     />
@@ -22,16 +37,18 @@ const MapView = ({ setOfficesLoading }) => {
     const [drawerState, setDrawerState] = useState(false);
 
     const toggleDrawer = (open) => {
-        console.log(open)
         setDrawerState(open);
     };
     const data = () => {
-        return districts.map((distGeoJson, id) => <District
-            geojson={distGeoJson}
+        districts.forEach(d => {
+            d.properties["NOM_NORMALITZAT"] = distIds[d.id]
+            d.properties.info = districtsInfo[d.id]
+        })
+        return districts.map((distData, id) => <District
+            data={distData}
             id={id}
             onClick={() => {
                 toggleDrawer(true)
-                console.log("asda", drawerState)
                 setSelectedDistrict(id)
             }}
         />)
@@ -40,6 +57,7 @@ const MapView = ({ setOfficesLoading }) => {
     const mapRef = useRef();
     const [isLoading, setLoading] = useState(false);
     const [districts, setDistricts] = useState([])
+    const [districtsInfo, setDistrictsInfo] = useState({})
     const [selectedDistrict, setSelectedDistrict] = useState(null)
     const [apiLoaded, setApiLoaded] = useState(false);
     useEffect(() => {
@@ -47,8 +65,9 @@ const MapView = ({ setOfficesLoading }) => {
         if (mapRef.current) {
 
             const fetchData = async () => {
-                const APIData = await callApi("api/polygons/", "GET")
-                setDistricts(APIData.features.filter(f => f.properties.SCONJ_DESC === "Districte"))
+                const APIData = await callApi("api/data/", "GET")
+                setDistricts(APIData.geojson.features.filter(f => f.properties.SCONJ_DESC === "Districte"))
+                setDistrictsInfo(APIData.dist_info)
                 setLoading(false)
                 setOfficesLoading(false)
                 setApiLoaded(true);
