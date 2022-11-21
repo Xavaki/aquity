@@ -102,7 +102,6 @@ let subsections = {
 const DistrictInfo = ({ info, districtClicked, clickDistrict }) => {
 
     // info presenter (list - paper - graph - etc.)
-    console.log(info)
     let infoPresenter = () => {
         return (
             <>

@@ -23,14 +23,14 @@ class get_district_data(APIView):
         idsDist = {
             1: 'Ciutat Vella',
             2: 'Eixample',
-            3: 'Sants-Montjuïc',
+            3: 'Sants-Montjuic',
             4: 'Les Corts',
-            5: 'Sarrià-Sant Gervasi',
-            6: 'Gràcia',
-            7: 'Horta-Guinardó',
+            5: 'Sarria-Sant Gervasi',
+            6: 'Gracia',
+            7: 'Horta-Guinardo',
             8: 'Nou Barris',
             9: 'Sant Andreu',
-            10: 'Sant Martí',
+            10: 'Sant Marti',
         }
 
         distIds = {d : i for i,d in idsDist.items()}
@@ -46,8 +46,8 @@ class get_district_data(APIView):
         dist_info_all = {}
         for row in rows[1:]:
             dist_name = row[0]
-            if dist_name == 'Sarrià-Gervasi': 
-                dist_name = 'Sarrià-Sant Gervasi'
+            if dist_name == 'Sarria-Gervasi': 
+                dist_name = 'Sarria-Sant Gervasi'
             dist_id = distIds[dist_name]
             dist_info = {}
             for (k,v) in zip(fields,row): 

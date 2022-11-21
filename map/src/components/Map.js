@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Map, TileLayer, GeoJSON, coordsToLatLng } from 'react-leaflet';
+import { TileLayer, GeoJSON, MapContainer, useMapEvent } from 'react-leaflet';
+// import { useMapEvent } from 'react-leaflet/hooks'
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import callApi from './api';
@@ -22,14 +23,33 @@ const distIds = {
 
 
 const District = ({ id, data, demodata, style, onClick }) => {
-    return <GeoJSON
-        key={id}
-        data={data}
-        color={data.properties.info.color}
-        weight={1}
-        // fillOpacity={}
-        onClick={() => onClick()}
-    />
+    return (
+        <>
+            <GeoJSON
+                key={id}
+                data={data}
+                color={data.properties.info.color}
+                weight={1}
+                // fillOpacity={}
+                onEachFeature={(feature, layer) => {
+                    layer.on({
+                        click: () => {
+                            onClick()
+                        }
+                    })
+                }}
+            />
+        </>
+    )
+}
+
+function SetViewOnClick({ }) {
+    const map = useMapEvent('click', (e) => {
+        map.setView(e.latlng, map.getZoom(), {
+            animate: true,
+        })
+    })
+    return null
 }
 
 const MapView = ({ setOfficesLoading }) => {
@@ -46,14 +66,16 @@ const MapView = ({ setOfficesLoading }) => {
             d.properties.info["NOM_NORMALITZAT"] = distIds[d.id]
             d.properties.info["color"] = palette[parseInt(d.id) - 1]
         })
-        return districts.map((distData, id) => <District
-            data={distData}
-            id={id}
-            onClick={() => {
-                clickDistrict(true)
-                setSelectedDistrict(id)
-            }}
-        />)
+        return districts.map((distData, id) =>
+            <District
+                data={distData}
+                id={id}
+                onClick={() => {
+                    clickDistrict(true)
+                    setSelectedDistrict(id)
+                }}
+            />
+        )
     }
 
     const mapRef = useRef();
@@ -64,25 +86,26 @@ const MapView = ({ setOfficesLoading }) => {
     const [apiLoaded, setApiLoaded] = useState(false);
     useEffect(() => {
         if (!isLoading) { setLoading(true) }
-        if (mapRef.current) {
-
-            const fetchData = async () => {
-                const APIData = await callApi("api/data/", "GET")
-                setDistricts(APIData.geojson.features.filter(f => f.properties.SCONJ_DESC === "Districte"))
-                setDistrictsInfo(APIData.dist_info)
-                setLoading(false)
-                setOfficesLoading(false)
-                setApiLoaded(true);
-            }
-            fetchData()
+        // if (mapRef.current) {
+        const fetchData = async () => {
+            const APIData = await callApi("api/data/", "GET")
+            setDistricts(APIData.geojson.features.filter(f => f.properties.SCONJ_DESC === "Districte"))
+            setDistrictsInfo(APIData.dist_info)
+            setLoading(false)
+            setOfficesLoading(false)
+            setApiLoaded(true);
         }
+        fetchData()
+        // }
     }, []);
 
     return (
         <>
-            {selectedDistrict !== null && <DistrictInfo info={districts[selectedDistrict].properties.info} districtClicked={districtClicked} clickDistrict={clickDistrict} />}
-            <Map
-                ref={mapRef}
+            {selectedDistrict !== null &&
+                <DistrictInfo info={districts[selectedDistrict].properties.info} districtClicked={districtClicked} clickDistrict={clickDistrict} />
+            }
+            <MapContainer
+                // ref={mapRef}
                 style={{ width: "100%", height: "100%" }}
                 center={{ lat: "41.387040", lng: " 2.170115" }}
                 zoom={14}
@@ -94,7 +117,8 @@ const MapView = ({ setOfficesLoading }) => {
                     url='https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=Py8yDz4u4TMlCiAXlJOh9DCN06nX8CoNg3KXUJeF7zVUygcVdfVcFyUvqYGFI74J'
                 />
                 {apiLoaded && data()}
-            </Map>
+                <SetViewOnClick />
+            </MapContainer>
         </>
     )
 }

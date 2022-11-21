@@ -10,6 +10,7 @@ export default function DemoDrawer({ drawerContent, drawerState, toggleDrawer })
                 <Drawer
                     anchor={"left"}
                     open={drawerState}
+                    slotProps={{ backdrop: { invisible: true } }}
                 >
                     <Box
                         sx={{ width: 400, margin: 3, marginTop: 11 }}

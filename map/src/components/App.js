@@ -11,7 +11,9 @@ let theme = createTheme({
     MuiDrawer: {
       styleOverrides: {
         modal: {
-          inset: false
+          root: {
+            inset: false
+          }
         }
       }
     }
