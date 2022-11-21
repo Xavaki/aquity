@@ -1,6 +1,6 @@
 import React from 'react'
-import DemoDrawer from './DemoDrawer'
-import { Typography } from '@mui/material';
+// import DemoDrawer from './DemoDrawer'
+import { Typography, Box } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 var numeral = require('numeral');
 
@@ -99,7 +99,7 @@ let subsections = {
     'Immigració (Taxa cada 1000 habitants) 2019': 'Immigració',
 }
 
-const DistrictInfo = ({ info, districtClicked, clickDistrict }) => {
+const DistrictInfo = ({ info, open, closeDistrict }) => {
 
     // info presenter (list - paper - graph - etc.)
     let infoPresenter = () => {
@@ -117,7 +117,7 @@ const DistrictInfo = ({ info, districtClicked, clickDistrict }) => {
                     >
                         {info.NOM_NORMALITZAT}
                     </Typography>
-                    <CloseRoundedIcon onClick={() => clickDistrict(false)} sx={{ color: "rgb(112,112,112)", "&:hover": { cursor: "pointer" } }}>x</CloseRoundedIcon>
+                    <CloseRoundedIcon onClick={() => closeDistrict()} sx={{ color: "rgb(112,112,112)", "&:hover": { cursor: "pointer" } }}>x</CloseRoundedIcon>
                 </div>
                 <div style={{ width: "100%", marginTop: 10 }}>
                     {Object.entries(columns).map(kv => {
@@ -179,7 +179,31 @@ const DistrictInfo = ({ info, districtClicked, clickDistrict }) => {
     }
     // component presenter (drawer/navbar/etc)
     return (
-        <DemoDrawer drawerContent={infoPresenter()} drawerState={districtClicked} toggleDrawer={clickDistrict} />
+        <div style={{
+            height: "100%",
+            width: "400px",
+            position: "fixed",
+            zIndex: 999,
+            marginLeft: open ? 0 : "-400px",
+            transitionDuration: "0.2s",
+            transitionProperty: "margin-left",
+            backgroundColor: "white",
+            opacity: 0.9,
+            overflowY: "scroll",
+            // boxShadow: "2px 0px 4px 20px rgba(0, 0, 0, 0.6)"
+
+        }}>
+            <Box
+                sx={{ width: 400, marginTop: 11 }}
+                role="presentation"
+            >
+                <div style={{ padding: 25, paddingTop: 0 }}>
+                    {infoPresenter()}
+
+                </div>
+            </Box>
+        </div>
+        // <DemoDrawer drawerContent={infoPresenter()} drawerState={districtClicked} toggleDrawer={clickDistrict} />
     )
 }
 

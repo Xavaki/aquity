@@ -102,7 +102,7 @@ const MapView = ({ setOfficesLoading }) => {
     return (
         <>
             {selectedDistrict !== null &&
-                <DistrictInfo info={districts[selectedDistrict].properties.info} districtClicked={districtClicked} clickDistrict={clickDistrict} />
+                <DistrictInfo info={districts[selectedDistrict].properties.info} open={districtClicked} closeDistrict={() => clickDistrict(false)} />
             }
             <MapContainer
                 // ref={mapRef}
