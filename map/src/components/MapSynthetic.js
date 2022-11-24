@@ -58,17 +58,20 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
     }
     const hhData = () => {
         return households.features.map((data, id) => {
-            console.log(data.geometry.coordinates)
-            return < Marker position={data.geometry.coordinates.reverse()} icon={icon('#db2425')} />
+            return < Marker position={data.geometry.coordinates.reverse()} icon={icon(testColor)} />
         }
         )
     }
 
     const mapRef = useRef();
+
     const [isLoading, setLoading] = useState(false);
     const [districts, setDistricts] = useState([])
     const [neighborhoods, setNeighborhoods] = useState([])
     const [households, setHouseholds] = useState([])
+
+    let [testColor, setTestColor] = useState('#db2425')
+
     const [apiLoaded, setApiLoaded] = useState(false);
 
     useEffect(() => {
@@ -97,9 +100,14 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
         // }
     }, []);
 
+    let [sliderValue, setSliderValue] = useState(1);
+    const handleChange = (event, newValue) => {
+        // setSliderValue(newValue);
+    };
+
     return (
         <>
-            <SideMenu />
+            <SideMenu sliderValue={sliderValue} changeSliderValue={handleChange} />
             <MapContainer
                 // ref={mapRef}
                 style={{ width: "100%", height: "100%" }}

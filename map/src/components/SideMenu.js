@@ -1,14 +1,28 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Button, Slider, Typography } from '@mui/material'
 import React from 'react'
 
-const SideMenu = () => {
+const SideMenu = ({ sliderValue, changeSliderValue }) => {
 
     let menuContent = () => {
-        return <Typography variant='h4'
-            style={{ paddingBottom: 5 }}
-        >
-            Menu
-        </Typography>
+        return (
+            <div>
+                <Typography variant='h4'
+                    style={{ paddingBottom: 5 }}
+                >
+                    Menu
+                </Typography>
+                <Slider
+                    aria-label="time"
+                    // value={sliderValue}
+                    // onChange={changeSliderValue}
+                    style={{ width: "250px" }}
+                    marks
+                    step={1}
+                    min={1}
+                    max={24}
+                />
+                {sliderValue}
+            </div>)
     }
     return (
         <div style={{
