@@ -11,7 +11,6 @@ def index(request):
     return render(request, 'map/index.html', context)
 
 
-
 class get_district_data(APIView):
     authentication_classes = []
     permission_classes = []
@@ -59,6 +58,16 @@ class get_district_data(APIView):
             "dist_info" : dist_info_all
         }
 
+        return Response(response)
+
+class get_sinthetic_data(APIView):
+    authentication_classes = []
+    permission_classes = []
+    def get(self, request):
+        
+        with open('./HH_SINTETICS.json') as f:
+            response = json.load(f)
+        
         return Response(response)
 
 

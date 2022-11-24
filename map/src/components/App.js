@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 
 import NavBar from './NavBar';
 import MapView from './Map';
+import MapSynthetic from './MapSynthetic';
 
 let theme = createTheme({
   components: {
@@ -72,6 +73,7 @@ const App = () => {
           <Routes>
             <Route element={<Outlet />}>
               <Route path="/" element={<Home />} />
+              <Route path="/sintetic/" element={<Synthetic />} />
             </Route>
           </Routes>
         </Router>
@@ -88,6 +90,18 @@ const Home = () => {
       <NavBar officesLoading={officesLoading} />
       <Box sx={{ height: "100%", width: "100%", m: 0, pr: "50px" }}>
         <MapView setOfficesLoading={setOfficesLoading} />
+      </Box>
+    </div>
+  )
+}
+
+const Synthetic = () => {
+  let [officesLoading, setOfficesLoading] = useState(true);
+  return (
+    <div style={{ height: window.innerHeight, width: window.innerWidth }}>
+      <NavBar officesLoading={officesLoading} />
+      <Box sx={{ height: "100%", width: "100%", m: 0, pr: "50px" }}>
+        <MapSynthetic setSynthDataLoadning={setOfficesLoading} />
       </Box>
     </div>
   )
