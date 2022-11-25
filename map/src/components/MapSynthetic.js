@@ -63,12 +63,12 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
     }
 
 
-    let consumColor = (cons) => colormap((cons + 10) / consRange[1])
+    let consum2Color = (cons) => colormap((cons + 10) / consRange[1])
 
     const hhData = () => {
         return households.features.map((data, id) => {
             let consum = data.properties.patro_consum[timeStep - 1]
-            return < Marker position={data.geometry.coordinates.reverse()} icon={icon(consumColor(consum))} />
+            return < Marker position={data.geometry.coordinates.reverse()} icon={icon(consum2Color(consum))} />
         }
         )
     }
@@ -105,9 +105,6 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
             setHouseholds(households)
             setConsRange([minc, maxc])
 
-            console.log(districts)
-            console.log(households)
-
             setLoading(false)
             setSynthDataLoadning(false)
             setApiLoaded(true);
@@ -135,7 +132,7 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
             }}>
 
             </div> */}
-            <SideMenu sliderValue={sliderValue} changeSliderValue={chooseTimeStep} consColormap={consColormap} />
+            <SideMenu sliderValue={sliderValue} changeSliderValue={chooseTimeStep} consColormap={consColormap} consum2Color={consum2Color} />
             <MapContainer
                 // ref={mapRef}
                 style={{ width: "100%", height: "100%" }}

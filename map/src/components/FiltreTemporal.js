@@ -1,7 +1,10 @@
 import { Slider, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 
 const FiltreTemporal = (props) => {
+
+    let [listHidden, setListHidden] = useState(true);
+
     return (
         <div>
             <Typography variant='body2' style={{
@@ -20,38 +23,34 @@ const FiltreTemporal = (props) => {
                 }}>
                     Escala
                 </Typography>
-                <div style={{
-                    paddingLeft: 5,
-                    paddingRight: 20,
-                    backgroundColor: "whitesmoke",
-                    borderRadius: "4px",
-                    cursor: "pointer"
-                }}
-                >
-                    <Typography variant='body1' style={{
+                <div>
+                    <div style={{
+                        paddingLeft: 5,
+                        paddingRight: 20,
+                        backgroundColor: "whitesmoke",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                    }}
+                        onClick={() => setListHidden(!listHidden)}
+                    >
+                        <Typography variant='body1' style={{
+                        }}>
+                            24 h
+                        </Typography>
+                    </div>
+                    <div style={{
+                        height: listHidden ? "0px" : "200px",
+                        width: "150px",
+                        position: "absolute",
+                        backgroundColor: "whitesmoke",
+                        marginTop: 5,
+                        zIndex: 2000,
+                        transitionDuration: "0.2s",
+                        borderRadius: "4px",
+                        transitionProperty: "height",
                     }}>
-                        24 h
-                    </Typography>
-                </div>
-            </div>
-            <div style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginTop: 2,
-            }}>
-                <Typography variant='body3' style={{
-                }}>
-                    Time pos.
-                </Typography>
-                <div style={{
-                }}
-                >
-                    <Typography variant='body3' style={{
-                    }}>
-                        {props.sliderValue}
-                    </Typography>
+
+                    </div>
                 </div>
             </div>
             <Slider

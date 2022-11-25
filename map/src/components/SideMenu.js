@@ -2,22 +2,26 @@ import { Box, Typography } from '@mui/material'
 import FiltreTemporal from './FiltreTemporal'
 import React from 'react'
 import FiltreBarri from './FiltreBarri'
+import Chart from './Chart.js'
 
-const SideMenu = ({ sliderValue, changeSliderValue, consColormap }) => {
+const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color }) => {
 
     let menuContent = () => {
         return (
-            <div style={{ width: "80%" }}>
-                <Typography variant='h4'
-                    style={{
-                        paddingBottom: 5,
-                        marginBottom: 10,
-                    }}
-                >
-                    Sant Martí
-                </Typography>
-                <FiltreBarri />
-                <FiltreTemporal sliderValue={sliderValue} changeSliderValue={changeSliderValue} />
+            <div style={{ width: "100%" }}>
+                <div style={{ width: "100%" }}>
+                    <Typography variant='h4'
+                        style={{
+                            paddingBottom: 5,
+                            marginBottom: 10,
+                        }}
+                    >
+                        Sant Martí
+                    </Typography>
+                    <FiltreBarri />
+                    <FiltreTemporal sliderValue={sliderValue} changeSliderValue={changeSliderValue} />
+                </div>
+                <Chart consum2Color={consum2Color} />
             </div>)
     }
     return (
