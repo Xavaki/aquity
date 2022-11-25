@@ -35,6 +35,16 @@ let theme = createTheme({
       color: "rgb(112,112,112)",
 
     },
+    body2: {
+      fontSize: "20px"
+    },
+    body3: {
+      fontSize: "15px",
+      color: "rgb(112,112,112)",
+      fontFamily: [
+        '"Inter", monospace',
+      ].join(','),
+    },
     h1: {
       fontWeight: "600",
       color: "rgb(112,112,112)",

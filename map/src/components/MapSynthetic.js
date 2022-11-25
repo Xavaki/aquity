@@ -6,6 +6,10 @@ import L from 'leaflet';
 import callApi from './api';
 import SideMenu from './SideMenu';
 
+const interpolate = require('color-interpolate');
+let consColormap = ['#1f005c', '#ffb56b'];
+let colormap = interpolate(consColormap);
+
 
 
 // https://stackoverflow.com/questions/23567203/leaflet-changing-marker-color
@@ -50,15 +54,21 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
                 data={data}
                 id={id}
                 key={id}
-                color={data.properties.color}
+                // color={data.properties.color}
+                color={"black"}
                 weight={0}
-                fillOpacity={0.1}
+                fillOpacity={0.05}
             />
         )
     }
+
+
+    let consumColor = (cons) => colormap((cons + 10) / consRange[1])
+
     const hhData = () => {
         return households.features.map((data, id) => {
-            return < Marker position={data.geometry.coordinates.reverse()} icon={icon(testColor)} />
+            let consum = data.properties.patro_consum[timeStep - 1]
+            return < Marker position={data.geometry.coordinates.reverse()} icon={icon(consumColor(consum))} />
         }
         )
     }
@@ -69,6 +79,9 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
     const [districts, setDistricts] = useState([])
     const [neighborhoods, setNeighborhoods] = useState([])
     const [households, setHouseholds] = useState([])
+
+    const [consRange, setConsRange] = useState([])
+    const [timeStep, setTimeStep] = useState(1)
 
     let [testColor, setTestColor] = useState('#db2425')
 
@@ -82,12 +95,15 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
             let dist_geojson = APIData.dist_geojson;
             let hh_geojson = APIData.hh_geojson;
             let neighborhoods = dist_geojson.features.filter(f => f.properties.SCONJ_DESC === "Barri")
+            let others = APIData.others;
             let districts = dist_geojson.features.filter(f => f.properties.SCONJ_DESC === "Districte")
             let households = hh_geojson
+            let { minc, maxc } = others;
 
             setDistricts(districts)
             setNeighborhoods(neighborhoods)
             setHouseholds(households)
+            setConsRange([minc, maxc])
 
             console.log(districts)
             console.log(households)
@@ -101,13 +117,25 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
     }, []);
 
     let [sliderValue, setSliderValue] = useState(1);
-    const handleChange = (event, newValue) => {
-        // setSliderValue(newValue);
+    const chooseTimeStep = (newValue) => {
+        setSliderValue(newValue);
+        setTimeStep(newValue);
     };
 
     return (
         <>
-            <SideMenu sliderValue={sliderValue} changeSliderValue={handleChange} />
+            {/* <div style={{
+                position: "fixed",
+                backgroundColor: "tan",
+                width: "200px",
+                zIndex: 1000,
+                height: "30px",
+                top: "90px",
+                left: "220px"
+            }}>
+
+            </div> */}
+            <SideMenu sliderValue={sliderValue} changeSliderValue={chooseTimeStep} consColormap={consColormap} />
             <MapContainer
                 // ref={mapRef}
                 style={{ width: "100%", height: "100%" }}

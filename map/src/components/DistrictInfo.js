@@ -190,7 +190,7 @@ const DistrictInfo = ({ info, open, closeDistrict }) => {
             backgroundColor: "white",
             opacity: 0.9,
             overflowY: "scroll",
-            // boxShadow: "2px 0px 4px 20px rgba(0, 0, 0, 0.6)"
+            boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
 
         }}>
             <Box

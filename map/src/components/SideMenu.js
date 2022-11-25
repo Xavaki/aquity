@@ -1,38 +1,35 @@
-import { Box, Button, Slider, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
+import FiltreTemporal from './FiltreTemporal'
 import React from 'react'
+import FiltreBarri from './FiltreBarri'
 
-const SideMenu = ({ sliderValue, changeSliderValue }) => {
+const SideMenu = ({ sliderValue, changeSliderValue, consColormap }) => {
 
     let menuContent = () => {
         return (
-            <div>
+            <div style={{ width: "80%" }}>
                 <Typography variant='h4'
-                    style={{ paddingBottom: 5 }}
+                    style={{
+                        paddingBottom: 5,
+                        marginBottom: 10,
+                    }}
                 >
-                    Menu
+                    Sant Martí
                 </Typography>
-                <Slider
-                    aria-label="time"
-                    // value={sliderValue}
-                    // onChange={changeSliderValue}
-                    style={{ width: "250px" }}
-                    marks
-                    step={1}
-                    min={1}
-                    max={24}
-                />
-                {sliderValue}
+                <FiltreBarri />
+                <FiltreTemporal sliderValue={sliderValue} changeSliderValue={changeSliderValue} />
             </div>)
     }
     return (
         <div style={{
             height: "100%",
-            width: "400px",
+            width: "450px",
             position: "fixed",
             zIndex: 999,
             marginLeft: 0,
             backgroundColor: "white",
             overflowY: "scroll",
+            boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
         }}>
             <Box
                 sx={{ width: 400, marginTop: 11 }}
@@ -49,7 +46,21 @@ const SideMenu = ({ sliderValue, changeSliderValue }) => {
                     {menuContent()}
                 </div>
             </Box>
-        </div>
+            <div style={{
+                position: "fixed",
+                borderRadius: "3%",
+                boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+                backgroundColor: "white",
+                backgroundImage: `linear-gradient(to right, ${consColormap.join(', ')})`,
+                width: "300px",
+                zIndex: 1000,
+                height: "30px",
+                top: "80px",
+                left: "480px"
+            }}>
+
+            </div>
+        </div >
     )
 }
 
