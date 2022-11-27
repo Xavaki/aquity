@@ -19,8 +19,8 @@ const NavBar = ({ officesLoading }) => {
         <AppBar position="fixed" color="inherit" sx={{ boxShadow: "0 2px whitesmoke", zIndex: 1400, paddingBottom: 0 }}>
             <Toolbar>
                 <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
-                    <Typography variant='h5' sx={{ color: "rgb(112,112,112)", mt: 1 }}>Aquity (logo)</Typography>
-                    <Typography variant='h5' sx={{ color: "rgb(112,112,112)", mt: 1 }}>AB (logo)</Typography>
+                    <img src={`/static/map/images/aquity.jpeg`} height="50px" alt="logo" className='logo' />
+                    <img src={`/static/map/images/ab.jpeg`} width="50px" alt="logo" className='logo' />
                 </div>
             </Toolbar>
             {officesLoading && <LinearProgress />}

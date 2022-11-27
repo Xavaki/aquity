@@ -325,10 +325,10 @@ const ZoneInfo = ({ zone, open, closeDistrict }) => {
     return (
         <div style={{
             height: "100%",
-            width: "400px",
+            width: "450px",
             position: "fixed",
             zIndex: 999,
-            marginLeft: open ? 0 : "-400px",
+            marginLeft: open ? 0 : "-450px",
             transitionDuration: "0.2s",
             transitionProperty: "margin-left",
             backgroundColor: "white",
@@ -338,7 +338,7 @@ const ZoneInfo = ({ zone, open, closeDistrict }) => {
 
         }}>
             <Box
-                sx={{ width: 400, marginTop: 11 }}
+                sx={{ width: 450, marginTop: 11 }}
                 role="presentation"
             >
                 <div style={{ padding: 25, paddingTop: 0 }}>
