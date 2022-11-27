@@ -16,7 +16,7 @@ const MarkerIcon = props => {
 const NavBar = ({ officesLoading }) => {
 
     return (
-        <AppBar position="fixed" color="inherit" sx={{ boxShadow: "0 2px whitesmoke", zIndex: 1400, paddingBottom: 0 }}>
+        <AppBar position="fixed" color="inherit" sx={{ boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px", zIndex: 1400, paddingBottom: 0 }}>
             <Toolbar>
                 <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
                     <img src={`/static/map/images/aquity.jpeg`} height="50px" alt="logo" className='logo' />
