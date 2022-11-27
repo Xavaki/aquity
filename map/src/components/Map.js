@@ -121,7 +121,7 @@ const MapView = ({ setOfficesLoading }) => {
             let muniInfo = APIData.muni_info
 
 
-            setMunicipis(muniInfo.features);
+            setMunicipis(muniInfo.features.sort((a, b) => (a.properties.MUNI_ID > b.properties.MUNI_ID ? 1 : -1)));
 
             setDistricts(APIData.geojson.features.filter(f => f.properties.SCONJ_DESC === "Districte"))
             setDistrictsInfo(APIData.dist_info)

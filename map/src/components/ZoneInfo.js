@@ -4,29 +4,6 @@ import { Typography, Box } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 var numeral = require('numeral');
 
-// 'Districtes': 'Ciutat Vella',
-// '€ per Capita': '15817.8',
-// '% Sense Estudis': '0.022',
-// '% Estudis primaris': '0.236',
-// '% ESO': '0.219',
-// '% Batxillerat': '0.204',
-// '% Universitat': '0.32',
-// 'Casos de Delinqüència': '3172',
-// "Casos d'Atur 2019": '7734833',
-// "Casos d'Atur 2020": '2106146',
-// "Casos d'Atur 2021": '2032854',
-// 'Preu de les vivendes (€/m2) 2019': '4506',
-// 'Preu de les vivendes (€/m2) 2020': '4476',
-// 'Preu de les vivendes (€/m2) 2021': '4303',
-// 'Mortalitat (Taxa cada 1000 habitants) 2019': '7.05',
-// 'Mortalitat (Taxa cada 1000 habitants) 2020': '8.45',
-// 'Mortalitat (Taxa cada 1000 habitants) 2021': '7.75',
-// 'Immigració (Taxa cada 1000 habitants) 2019': '160.675',
-// 'Immigració (Taxa cada 1000 habitants) 2020': '96.95',
-// 'Immigració (Taxa cada 1000 habitants) 2021': '119.3',
-// 'Consum Aigua': '1135.206897',
-// 'Latitud': '41.3813',
-// 'Longitud': '2.1823',
 
 const columns = {
     // 'Districtes': 'Districtes',
@@ -53,12 +30,14 @@ const columns = {
     // 'Latitud': 'Latitud',
     // 'Longitud': 'Longitud',
 }
-
 let f0 = d => d;
 let f1 = d => numeral(d).format('0,0').replace(',', '.');
+let f12 = d => numeral(d).format('0,0');
 let fp = d => numeral(d).format('0%');
 let fp2 = d => numeral(parseFloat(d) / 1000).format('0%');
-
+let fp3 = d => numeral(parseFloat(d) / 1000).format('0%');
+let fp4 = (n, d) => numeral(parseFloat(n) / parseFloat(d)).format('0%');
+let f10 = d => numeral(parseFloat(d) / 10).format('0,0')
 const formats = {
     // 'Districtes': 'Districtes',
     '€ per Capita': f1,
@@ -84,12 +63,10 @@ const formats = {
     // 'Latitud': 'Latitud',
     // 'Longitud': 'Longitud',
 }
-
 let sections = {
     'Consum Aigua': 'Dades d\'aigua',
     '€ per Capita': 'Dades demogràfiques',
 }
-
 let subsections = {
     '€ per Capita': 'Vàries',
     '% Sense Estudis': 'Educació',
@@ -99,11 +76,172 @@ let subsections = {
     'Immigració (Taxa cada 1000 habitants) 2019': 'Immigració',
 }
 
+
+const muniSections = {
+    "WaterConsumption": "Dades d\'aigua",
+    "Population": "Dades demogràfiques",
+    "%PrimaryStudies": "Educació (màxim nivell assolit)",
+}
+const muniColumns = {
+    "WaterConsumption": "Consum d'aigua (l)",
+    "Population": "Població",
+    "PIB": "PIB (milers d'euros per habitant)",
+    "FamilyIncome": "Renda familiar (milers d'euros per habitant)",
+    "Immigration": "Immigració",
+    "Mortality": "Defuncions",
+    "Criminality": "Taxa de delinqüència",
+    "Unemployment": "Atur",
+    "%PrimaryStudies": "Educació primaria",
+    "%1stStageESO": "ESO",
+    "%2ndStageESO": "Batxillerat",
+    "%SuperiorStudies": "Estudis superiors",
+}
+
+const muniFormats = {
+    "%PrimaryStudies": fp3,
+    "%1stStageESO": fp3,
+    "%2ndStageESO": fp3,
+    "%SuperiorStudies": fp3,
+    "Criminality": fp4,
+    "FamilyIncome": f10,
+    "Immigration": fp4,
+    "Mortality": f12,
+    "PIB": f10,
+    "Population": f12,
+    "Unemployment": fp4,
+    "WaterConsumption": f12,
+}
+
 const ZoneInfo = ({ zone, open, closeDistrict }) => {
 
 
     let muniPresenter = () => {
-        return <div>Muni</div>
+        let info = zone.properties.DEMO_INFO;
+        console.log(zone.properties)
+        return (
+            <>
+                <div style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    borderBottom: `1px solid ${zone.properties.color}`,
+                }}>
+                    <Typography variant='h4'
+                        style={{ paddingBottom: 5 }}
+                        color={zone.properties.color}
+                    >
+                        {zone.properties.nom_muni}
+                    </Typography>
+                    <CloseRoundedIcon onClick={() => closeDistrict()} sx={{ color: "rgb(112,112,112)", "&:hover": { cursor: "pointer" } }}>x</CloseRoundedIcon>
+                </div>
+                <div style={{ width: "100%", marginTop: 10 }}>
+                    {Object.entries(muniColumns).map(kv => {
+                        let [k, v] = kv;
+                        return (
+                            <>
+                                {
+                                    muniSections[k] &&
+                                    <Typography
+                                        color={info.color}
+                                        variant="body1"
+                                        style={{
+                                            margin: 0,
+                                            marginTop: 4,
+                                            marginBottom: 5,
+                                            fontWeight: "bold",
+                                            color: zone.properties.color
+                                        }}>
+                                        {muniSections[k]}
+                                    </Typography>
+                                }
+                                {/* {
+                                    subsections[k] &&
+                                    <Typography
+                                        // color="primary"
+                                        variant="body1"
+                                        style={{
+                                            margin: 0,
+                                            marginTop: 4,
+                                            marginBottom: 3,
+                                            fontWeight: "bold",
+                                        }}>
+                                        {subsections[k]}
+                                    </Typography>
+                                } */}
+                                <Typography
+                                    variant="body3"
+                                    style={{
+                                        margin: 0,
+                                        // paddingLeft: k === "Consum Aigua" ? null : 10
+                                    }}>
+                                    {v}
+                                </Typography>
+                                <div style={{ width: "100%", display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
+                                    <Typography
+                                        variant="body3"
+                                        style={{
+                                            margin: 0,
+                                            marginLeft: 15,
+                                            // paddingLeft: k === "Consum Aigua" ? null : 10
+                                        }}>
+                                        2019
+                                    </Typography>
+                                    <Typography
+                                        variant="body3"
+                                        style={{
+                                            margin: 0,
+                                            // fontWeight: "bold",
+                                        }}>
+                                        {/* {formats[k](info[k])} */}
+                                        {muniFormats[k](info["2019"][k], info["2019"]["Population"])}
+                                    </Typography>
+                                </div>
+                                <div style={{ width: "100%", display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
+                                    <Typography
+                                        variant="body3"
+                                        style={{
+                                            margin: 0,
+                                            marginLeft: 15,
+                                            // paddingLeft: k === "Consum Aigua" ? null : 10
+                                        }}>
+                                        2020
+                                    </Typography>
+                                    <Typography
+                                        variant="body3"
+                                        style={{
+                                            margin: 0,
+                                            // fontWeight: "bold",
+                                        }}>
+                                        {/* {formats[k](info[k])} */}
+                                        {muniFormats[k](info["2020"][k], info["2020"]["Population"])}
+                                    </Typography>
+                                </div>
+                                <div style={{ width: "100%", display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+                                    <Typography
+                                        variant="body3"
+                                        style={{
+                                            margin: 0,
+                                            marginLeft: 15,
+                                            // paddingLeft: k === "Consum Aigua" ? null : 10
+                                        }}>
+                                        2021
+                                    </Typography>
+                                    <Typography
+                                        variant="body3"
+                                        style={{
+                                            margin: 0,
+                                            // fontWeight: "bold",
+                                        }}>
+                                        {/* {formats[k](info[k])} */}
+                                        {muniFormats[k](info["2021"][k], info["2021"]["Population"])}
+                                    </Typography>
+                                </div>
+                            </>
+                        )
+                    })}
+                </div>
+            </>
+        )
     }
 
     // info presenter (list - paper - graph - etc.)
@@ -153,14 +291,14 @@ const ZoneInfo = ({ zone, open, closeDistrict }) => {
                                             margin: 0,
                                             marginTop: 4,
                                             marginBottom: 3,
-                                            // fontWeight: "bold",
+                                            fontWeight: "bold",
                                         }}>
                                         {subsections[k]}
                                     </Typography>
                                 }
                                 <div style={{ width: "100%", display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
                                     <Typography
-                                        variant="body2"
+                                        variant="body3"
                                         style={{
                                             margin: 0,
                                             paddingLeft: k === "Consum Aigua" ? null : 10
@@ -168,7 +306,7 @@ const ZoneInfo = ({ zone, open, closeDistrict }) => {
                                         {v}
                                     </Typography>
                                     <Typography
-                                        variant="body2"
+                                        variant="body3"
                                         style={{
                                             margin: 0,
                                             // fontWeight: "bold",
