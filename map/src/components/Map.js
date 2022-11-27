@@ -4,9 +4,11 @@ import { TileLayer, GeoJSON, MapContainer, useMapEvent } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import callApi from './api';
-import DistrictInfo from './DistrictInfo';
+import ZoneInfo from './ZoneInfo';
+import { select } from 'underscore';
 
 const palette = ['#19439c', '#4f7cb6', '#61a0c4', '#5ea9c6', '#4898bc', '#b1d2b2', '#71aa8b', '#3f886b', '#176d51', '#00563c']
+const muniPalette = ['#94003a', '#900c46', '#8b1551', '#851b5d', '#7f2169', '#772676', '#6e2b82'];
 
 const distIds = {
     1: 'Ciutat Vella',
@@ -54,10 +56,10 @@ function SetViewOnClick({ }) {
 
 const MapView = ({ setOfficesLoading }) => {
 
-    const [districtClicked, setDistrictClicked] = useState(false);
+    const [districtClicked, setClickedZone] = useState(false);
 
-    const clickDistrict = (open) => {
-        setDistrictClicked(open);
+    const clickZone = (open) => {
+        setClickedZone(open);
     };
 
     const data = () => {
@@ -71,24 +73,56 @@ const MapView = ({ setOfficesLoading }) => {
                 data={distData}
                 id={id}
                 onClick={() => {
-                    clickDistrict(true)
-                    setSelectedDistrict(id)
+                    clickZone(true)
+                    setSelectedZone(id)
                 }}
             />
+        )
+    }
+    const muniData = () => {
+        municipis.forEach(muni => {
+            muni.properties["color"] = muniPalette[muni.properties.MUNI_ID - 11]
+        })
+        return municipis.map((data, id) => {
+            return (
+                <GeoJSON
+                    key={id}
+                    data={data}
+                    color={data.properties.color}
+                    weight={1}
+                    // fillOpacity={}
+                    onEachFeature={(feature, layer) => {
+                        layer.on({
+                            click: () => {
+                                clickZone(true)
+                                setSelectedZone(data.properties.MUNI_ID)
+                            }
+                        })
+                    }}
+                />
+            )
+        }
         )
     }
 
     const mapRef = useRef();
     const [isLoading, setLoading] = useState(false);
     const [districts, setDistricts] = useState([])
+    const [municipis, setMunicipis] = useState([])
     const [districtsInfo, setDistrictsInfo] = useState({})
-    const [selectedDistrict, setSelectedDistrict] = useState(null)
+    const [selectedZone, setSelectedZone] = useState(null)
     const [apiLoaded, setApiLoaded] = useState(false);
     useEffect(() => {
         if (!isLoading) { setLoading(true) }
         // if (mapRef.current) {
         const fetchData = async () => {
             const APIData = await callApi("api/data/", "GET")
+
+            let muniInfo = APIData.muni_info
+
+
+            setMunicipis(muniInfo.features);
+
             setDistricts(APIData.geojson.features.filter(f => f.properties.SCONJ_DESC === "Districte"))
             setDistrictsInfo(APIData.dist_info)
             setLoading(false)
@@ -99,17 +133,22 @@ const MapView = ({ setOfficesLoading }) => {
         // }
     }, []);
 
+
+    const getSelectedZone = () => {
+        return selectedZone >= districts.length ? municipis[selectedZone - 11] : districts[selectedZone]
+    }
+
     return (
         <>
-            {selectedDistrict !== null &&
-                <DistrictInfo info={districts[selectedDistrict].properties.info} open={districtClicked} closeDistrict={() => clickDistrict(false)} />
+            {selectedZone !== null &&
+                <ZoneInfo zone={getSelectedZone()} open={districtClicked} closeDistrict={() => clickZone(false)} />
             }
             <MapContainer
                 // ref={mapRef}
                 style={{ width: "100%", height: "100%" }}
                 center={{ lat: "41.387040", lng: " 2.170115" }}
-                zoom={14}
-                minZoom={12}
+                zoom={11}
+                minZoom={11}
                 zoomControl={false}
             >
                 <TileLayer
@@ -117,6 +156,7 @@ const MapView = ({ setOfficesLoading }) => {
                     url='https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=Py8yDz4u4TMlCiAXlJOh9DCN06nX8CoNg3KXUJeF7zVUygcVdfVcFyUvqYGFI74J'
                 />
                 {apiLoaded && data()}
+                {apiLoaded && muniData()}
                 <SetViewOnClick />
             </MapContainer>
         </>

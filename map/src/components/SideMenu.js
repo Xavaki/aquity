@@ -2,10 +2,9 @@ import { Box, Typography } from '@mui/material'
 import FiltreTemporal from './FiltreTemporal'
 import React from 'react'
 import FiltreBarri from './FiltreBarri'
-import Chart from './Chart.js'
+import AvgConsum from './AvgConsum'
 
-const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color }) => {
-
+const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color, ...props }) => {
     let menuContent = () => {
         return (
             <div style={{ width: "100%" }}>
@@ -21,7 +20,10 @@ const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color }
                     <FiltreBarri />
                     <FiltreTemporal sliderValue={sliderValue} changeSliderValue={changeSliderValue} />
                 </div>
-                <Chart consum2Color={consum2Color} />
+                <AvgConsum
+                    consum2Color={consum2Color}
+                    avgPatroConsum={props.avgPatroConsum}
+                />
             </div>)
     }
     return (

@@ -21,7 +21,7 @@ const FiltreTemporal = (props) => {
             }}>
                 <Typography variant='body1' style={{
                 }}>
-                    Escala
+                    escala
                 </Typography>
                 <div>
                     <div style={{
@@ -51,6 +51,24 @@ const FiltreTemporal = (props) => {
                     }}>
 
                     </div>
+                </div>
+            </div>
+            <div style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginTop: 2
+            }}>
+                <Typography variant='body3' style={{
+                }}>
+                    time pos.
+                </Typography>
+                <div>
+                    <Typography variant='body3' style={{
+                    }}>
+                        {props.sliderValue}
+                    </Typography>
                 </div>
             </div>
             <Slider

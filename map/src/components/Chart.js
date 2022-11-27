@@ -7,30 +7,36 @@ import React from 'react'
 // no chart will be rendered.
 // website examples showcase many properties,
 // you'll often use just a few of them.
-let populateData = () => {
-    let values = Array.from(Array(24).keys()).map(key => ({ "x": key, "y": Math.random() * 50, }))
+let populateData = (rawData) => {
+    let values = rawData.map((cons, id) => ({ "x": id + 1, "y": cons, }))
     let curve = [{
         "id": "underlay",
-        "color": "rgba(112, 112, 112, 0.2)",
+        "color": "rgba(112, 112, 112, 0.3)",
         "data": values
     }]
-    let individualPoints = values.map(v => ({
-        "id": v.x.toString(),
-        "color": "rgb(255, 0, 0)",
-        "data": [v]
-    }))
-    let data = [...curve, ...[individualPoints[1]]]
-    console.log(data, individualPoints[0])
+    // let individualPoints = values.map(v => ({
+    //     "id": v.x.toString(),
+    //     "color": "rgb(255, 0, 0)",
+    //     "data": [v]
+    // }))
+    // let data = [...curve, ...[individualPoints[1]]]
+    // console.log(data, individualPoints[0])
     return curve
 }
-let data = populateData()
 
-const Chart = ({ consum2Color }) => {
+// FIX 
+const interpolate = require('color-interpolate');
+let consColormap = ['#1f005c', '#ffb56b'];
+let colormap = interpolate(consColormap);
+let consum2Color = (cons) => colormap((cons + 10) / 50)
+
+const Chart = (props) => {
+    let data = populateData(props.rawData)
     return (< div style={{ position: 'relative' }}>
         <div style={{
             position: 'absolute',
             width: '100%',
-            height: '300px',
+            height: '250px',
         }}>
             <ResponsiveLine
                 data={data}
@@ -47,24 +53,25 @@ const Chart = ({ consum2Color }) => {
                 enableArea
                 colors={a => a.color}
                 yFormat=" >-.2f"
+                curve={"basis"}
                 axisTop={null}
                 axisRight={null}
-                axisBottom={null}
-                // axisBottom={{
-                //     orient: 'bottom',
-                //     tickSize: 5,
-                //     tickPadding: 5,
-                //     tickRotation: 0,
-                //     legend: 'transportation',
-                //     legendOffset: 36,
-                //     legendPosition: 'middle'
-                // }}
+                lineWidth={0}
+                enableGridX={false}
+                // axisBottom={null}
+                axisBottom={{
+                    orient: 'bottom',
+                    tickSize: 5,
+                    tickValues: [1, 4, 7, 10, 13, 16, 19, 22],
+                    tickPadding: 5,
+                    tickRotation: 0,
+                }}
                 axisLeft={{
                     orient: 'right',
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 0,
-                    legend: 'consum mitjà',
+                    // legend: 'consum mitjà',
                     legendOffset: 10,
                     legendPosition: 'middle'
                 }}
@@ -72,9 +79,7 @@ const Chart = ({ consum2Color }) => {
                 // pointColor={(p, pp, ppp) => console.log(p, pp, ppp)}
                 // pointBorderWidth={2}
                 pointSymbol={e => {
-                    // let color = consum2Color(e.datum.y)
-                    let color = '#db2425'
-                    return <circle cx="0" cy="0" r="4" strokeWidth="0" fill={color} />
+                    return <circle cx="0" cy="0" r="5" strokeWidth="1" stroke="white" fill={consum2Color(e.datum.y)} />
                 }}
                 pointBorderColor={{ from: 'serieColor' }}
                 pointLabelYOffset={-12}

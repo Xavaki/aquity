@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import callApi from './api';
 import SideMenu from './SideMenu';
+import { zip } from 'underscore'
 
 const interpolate = require('color-interpolate');
 let consColormap = ['#1f005c', '#ffb56b'];
@@ -105,6 +106,8 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
             setHouseholds(households)
             setConsRange([minc, maxc])
 
+            computeAvgPatroConsum(households);
+
             setLoading(false)
             setSynthDataLoadning(false)
             setApiLoaded(true);
@@ -112,6 +115,23 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
         fetchData()
         // }
     }, []);
+
+
+    var avgEmAll = function (arrays) {
+        // zip with array of arrays https://stackoverflow.com/a/10394791/327074
+        return zip.apply(null, arrays).map(avg)
+    }
+
+    // average an array https://stackoverflow.com/a/10624256/327074
+    var avg = function (x) {
+        return x.reduce(function (y, z) { return Number(y) + Number(z) }) / x.length
+    }
+    let [avgPatroConsum, setAvgPatroConsum] = useState([])
+
+    let computeAvgPatroConsum = (households) => {
+        let all_patrons = households.features.map(f => f.properties.patro_consum);
+        setAvgPatroConsum(avgEmAll(all_patrons));
+    }
 
     let [sliderValue, setSliderValue] = useState(1);
     const chooseTimeStep = (newValue) => {
@@ -132,7 +152,13 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
             }}>
 
             </div> */}
-            <SideMenu sliderValue={sliderValue} changeSliderValue={chooseTimeStep} consColormap={consColormap} consum2Color={consum2Color} />
+            <SideMenu
+                sliderValue={sliderValue}
+                changeSliderValue={chooseTimeStep}
+                consColormap={consColormap}
+                consum2Color={consum2Color}
+                avgPatroConsum={avgPatroConsum}
+            />
             <MapContainer
                 // ref={mapRef}
                 style={{ width: "100%", height: "100%" }}

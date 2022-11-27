@@ -19,6 +19,9 @@ class get_district_data(APIView):
         with open('./0301100100_UNITATS_ADM_POLIGONS_TRANSFORMED.json') as f:
             geojson = json.load(f)
         
+        with open('./MUNI_INFO.json') as f:
+            muni_info = json.load(f)
+        
         idsDist = {
             1: 'Ciutat Vella',
             2: 'Eixample',
@@ -36,7 +39,7 @@ class get_district_data(APIView):
         distIds
 
         rows = []
-        with open('relation_district_water_consumption.xlsx - Hoja1.csv', mode='r') as infile:
+        with open('./districtes_info_demo.csv', mode='r') as infile:
             reader = csv.reader(infile)
             for row in reader:
                 rows.append(row)
@@ -55,7 +58,8 @@ class get_district_data(APIView):
 
         response = {
             "geojson" : geojson, 
-            "dist_info" : dist_info_all
+            "dist_info" : dist_info_all,
+            "muni_info" : muni_info, 
         }
 
         return Response(response)
