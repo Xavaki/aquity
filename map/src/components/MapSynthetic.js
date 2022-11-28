@@ -16,22 +16,22 @@ let colormap = interpolate(consColormap);
 
 
 // https://stackoverflow.com/questions/23567203/leaflet-changing-marker-color
-const markerHtmlStyles = color => `
+const markerHtmlStyles = (color, visibility) => `
   background-color: ${color};
   width: 0.5rem;
   height: 0.5rem;
-  display: block;
+  display: ${visibility};
   margin: 0;
   position: relative;
   border-radius: 100%;
   border: none`
 
-const icon = (color) => L.divIcon({
+const icon = (color, visibility) => L.divIcon({
     className: "my-custom-pin",
     iconAnchor: [0, 0],
     labelAnchor: [0, 0],
     popupAnchor: [4, 0],
-    html: `<span style="${markerHtmlStyles(color)}" />`
+    html: `<span style="${markerHtmlStyles(color, visibility)}" />`
 })
 
 
@@ -68,17 +68,31 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
 
     let consum2Color = (cons) => colormap((cons + 10) / consRange[1])
 
+    let barrid2Visibility = barrID => {
+        let barriRenta = barris[parseFloat(barrID)].RENTA
+        return (barriRenta >= filteredRentaRange[0] && barriRenta <= filteredRentaRange[1]) ? "block" : "none"
+    }
+
+    let filteredHouseholds = () => {
+        let rentaRangeFiltered = households.features.filter(hh => {
+            let barrID = parseInt(hh.properties.BARRI);
+            let barriRenta = barris[barrID].RENTA
+            return (barriRenta >= filteredRentaRange[0] && barriRenta <= filteredRentaRange[1])
+        })
+        console.log(rentaRangeFiltered.length)
+        return rentaRangeFiltered
+    }
+
     const hhData = () => {
-        console.log(households.features[0])
         return households.features.map((data, id) => {
             let consum = data.properties.patro_consum[timeStep - 1]
             return (
-                < Marker position={data.geometry.coordinates.reverse()} icon={icon(consum2Color(consum))}>
+                < Marker position={data.geometry.coordinates.reverse()} icon={icon(consum2Color(consum), barrid2Visibility(data.properties.BARRI))}>
                     <Popup maxWidth={1000}>
                         <div style={{ width: "400px", height: "300px", backgroundColor: "white" }}>
                             <Typography variant="body3">(adreça)</Typography>
                             <br></br>
-                            <Typography variant="body3">{data.properties.NOM_BARRI}</Typography>
+                            <Typography variant="body3">{data.properties.NOM_BARRI}, Sant Martí</Typography>
                             <br></br>
                             <Typography variant="body3" style={{ fontWeight: "bold" }}>consum total diari (l): {data.properties.total_cons}</Typography>
                             <Chart rawData={data.properties.patro_consum} height={"200px"} width={"300px"} />
@@ -97,7 +111,8 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
     const [neighborhoods, setNeighborhoods] = useState([])
     const [households, setHouseholds] = useState([])
     const [barris, setBarris] = useState({})
-
+    const [maxRentaRange, setMaxRentaRange] = useState([]);
+    const [filteredRentaRange, setFilteredRentaRange] = useState([])
     const [consRange, setConsRange] = useState([])
     const [timeStep, setTimeStep] = useState(1)
 
@@ -123,10 +138,16 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
             setNeighborhoods(neighborhoods)
             setHouseholds(households)
             setBarris(barris)
-            console.log(barris)
             setConsRange([minc, maxc])
 
+            let barrioRentas = Object.keys(barris).map(bid => parseInt(barris[bid].RENTA))
+            let maxRentaRange = [Math.min(...barrioRentas), Math.max(...barrioRentas)]
+            setMaxRentaRange(maxRentaRange)
+            setFilteredRentaRange(maxRentaRange)
+
             computeAvgPatroConsum(households);
+
+            console.log(households)
 
             setLoading(false)
             setSynthDataLoadning(false)
@@ -159,6 +180,10 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
         setTimeStep(newValue);
     };
 
+    let filterByRenta = newValue => {
+        setFilteredRentaRange(newValue)
+    }
+
     return (
         <>
             {/* <div style={{
@@ -172,13 +197,15 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
             }}>
 
             </div> */}
-            <SideMenu
+            {apiLoaded && <SideMenu
                 sliderValue={sliderValue}
                 changeSliderValue={chooseTimeStep}
                 consColormap={consColormap}
                 consum2Color={consum2Color}
                 avgPatroConsum={avgPatroConsum}
-            />
+                maxRentaRange={maxRentaRange}
+                filterByRenta={filterByRenta}
+            />}
             <MapContainer
                 // ref={mapRef}
                 style={{ width: "100%", height: "100%" }}

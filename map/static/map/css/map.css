@@ -22,3 +22,7 @@ body {
 .popuppaper {
   width : 400px; 
 }
+
+.hoverwhite:hover {
+  background-color: "white";
+}

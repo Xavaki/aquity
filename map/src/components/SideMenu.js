@@ -20,7 +20,7 @@ const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color, 
                     </Typography>
                     <FiltreBarri />
                     <FiltreTemporal sliderValue={sliderValue} changeSliderValue={changeSliderValue} />
-                    <FiltreCategoria />
+                    <FiltreCategoria maxRentaRange={props.maxRentaRange} filterByRenta={props.filterByRenta} />
                 </div>
                 <AvgConsum
                     consum2Color={consum2Color}
