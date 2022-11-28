@@ -73,8 +73,8 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
         return (barriRenta >= filteredRentaRange[0] && barriRenta <= filteredRentaRange[1]) ? "block" : "none"
     }
 
-    let filteredHouseholds = () => {
-        let rentaRangeFiltered = households.features.filter(hh => {
+    let filteredHouseholds = (households) => {
+        let rentaRangeFiltered = households.filter(hh => {
             let barrID = parseInt(hh.properties.BARRI);
             let barriRenta = barris[barrID].RENTA
             return (barriRenta >= filteredRentaRange[0] && barriRenta <= filteredRentaRange[1])
@@ -145,7 +145,6 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
             setMaxRentaRange(maxRentaRange)
             setFilteredRentaRange(maxRentaRange)
 
-            computeAvgPatroConsum(households);
 
             console.log(households)
 
@@ -167,11 +166,10 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
     var avg = function (x) {
         return x.reduce(function (y, z) { return Number(y) + Number(z) }) / x.length
     }
-    let [avgPatroConsum, setAvgPatroConsum] = useState([])
 
     let computeAvgPatroConsum = (households) => {
-        let all_patrons = households.features.map(f => f.properties.patro_consum);
-        setAvgPatroConsum(avgEmAll(all_patrons));
+        let all_patrons = households.map(f => f.properties.patro_consum);
+        return avgEmAll(all_patrons);
     }
 
     let [sliderValue, setSliderValue] = useState(1);
@@ -182,6 +180,7 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
 
     let filterByRenta = newValue => {
         setFilteredRentaRange(newValue)
+        // computeAvgPatroConsum(filteredHouseholds())
     }
 
     return (
@@ -202,7 +201,7 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
                 changeSliderValue={chooseTimeStep}
                 consColormap={consColormap}
                 consum2Color={consum2Color}
-                avgPatroConsum={avgPatroConsum}
+                avgPatroConsum={computeAvgPatroConsum(filteredHouseholds(households.features))}
                 maxRentaRange={maxRentaRange}
                 filterByRenta={filterByRenta}
             />}
