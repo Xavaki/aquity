@@ -9,7 +9,7 @@ const FiltreTemporal = (props) => {
         <div>
             <Typography variant='body2' style={{
                 fontWeight: "bold",
-                color: "black",
+                color: props.smcolor,
             }}>
                 Filtre temporal
             </Typography>
@@ -73,6 +73,7 @@ const FiltreTemporal = (props) => {
             </div>
             <Slider
                 aria-label="time"
+                color="santmarti"
                 size="small"
                 onChangeCommitted={(event, newValue, thumbIndex) => props.changeSliderValue(newValue)}
                 style={{

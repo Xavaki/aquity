@@ -26,6 +26,10 @@ let theme = createTheme({
     info: {
       main: "#db2425"
     },
+    santmarti: {
+      main: "#00563c",
+      contrastText: "whitesmoke"
+    }
   },
   typography: {
     fontFamily: [

@@ -59,6 +59,7 @@ const FiltreCategoria = (props) => {
             }}>
                 <Slider
                     size="small"
+                    color="santmarti"
                     value={value1}
                     onChange={handleChange1}
                     valueLabelDisplay="auto"
@@ -68,7 +69,7 @@ const FiltreCategoria = (props) => {
                     onChangeCommitted={(event, newValue) => setChangedValue(newValue)}
                 />
                 <Button
-                    color="primary"
+                    color="santmarti"
                     variant="contained"
                     onClick={() => props.filterByRenta(changedValue)}
 
@@ -86,6 +87,7 @@ const FiltreCategoria = (props) => {
             <Typography variant='body2' style={{
                 fontWeight: "bold",
                 marginBottom: 5,
+                color: props.smcolor
             }}>
                 Filtre categòric
             </Typography>

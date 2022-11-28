@@ -9,7 +9,7 @@ const AvgConsum = (props) => {
         }}>
             <Typography variant='body2' style={{
                 fontWeight: "bold",
-                color: "black",
+                color: props.smcolor
             }}>
                 Patró de consum mitjà
             </Typography>

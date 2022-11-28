@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material'
 import React, { useState } from 'react'
 
-const FiltreBarri = () => {
+const FiltreBarri = (props) => {
 
 
     let [listHidden, setListHidden] = useState(true);
@@ -18,7 +18,8 @@ const FiltreBarri = () => {
             marginBottom: 15,
         }}>
             <Typography variant='body2' style={{
-                fontWeight: "bold"
+                fontWeight: "bold",
+                color: props.smcolor
             }}>
                 Barri
             </Typography>

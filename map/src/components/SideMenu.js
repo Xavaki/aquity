@@ -6,6 +6,9 @@ import FiltreCategoria from './FiltreCategoria'
 import AvgConsum from './AvgConsum'
 
 const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color, ...props }) => {
+
+    let smcolor = "#00563c";
+
     let menuContent = () => {
         return (
             <div style={{ width: "100%" }}>
@@ -14,17 +17,20 @@ const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color, 
                         style={{
                             paddingBottom: 5,
                             marginBottom: 10,
+                            color: smcolor,
+                            borderBottom: `1px solid ${smcolor}`,
                         }}
                     >
                         Sant Martí
                     </Typography>
-                    <FiltreBarri />
-                    <FiltreTemporal sliderValue={sliderValue} changeSliderValue={changeSliderValue} />
-                    <FiltreCategoria maxRentaRange={props.maxRentaRange} filterByRenta={props.filterByRenta} />
+                    <FiltreBarri smcolor={smcolor} />
+                    <FiltreTemporal sliderValue={sliderValue} changeSliderValue={changeSliderValue} smcolor={smcolor} />
+                    <FiltreCategoria maxRentaRange={props.maxRentaRange} filterByRenta={props.filterByRenta} smcolor={smcolor} />
                 </div>
                 <AvgConsum
                     consum2Color={consum2Color}
                     avgPatroConsum={props.avgPatroConsum}
+                    smcolor={smcolor}
                 />
             </div>)
     }
