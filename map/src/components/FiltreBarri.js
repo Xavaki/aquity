@@ -30,6 +30,7 @@ const FiltreBarri = (props) => {
                     backgroundColor: "whitesmoke",
                     borderRadius: "4px",
                     cursor: "pointer",
+
                 }}
                     onClick={() => setListHidden(!listHidden)}
                 >
@@ -48,7 +49,9 @@ const FiltreBarri = (props) => {
                     transitionDuration: "0.2s",
                     borderRadius: "4px",
                     transitionProperty: "height",
-                }}>
+                }}
+                    onMouseLeave={() => setListHidden(true)}
+                >
 
                 </div>
             </div>

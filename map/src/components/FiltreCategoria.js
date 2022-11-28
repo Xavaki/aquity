@@ -123,7 +123,9 @@ const FiltreCategoria = (props) => {
                     transitionProperty: "height",
                     overflowY: "scroll",
                     // padding: 10,
-                }}>
+                }}
+                    onMouseLeave={() => setListHidden(true)}
+                >
                     {categories.filter(c => c !== selected).map(c => <Typography variant="body1" style={{
                         marginTop: 4,
                         marginLeft: 5,
