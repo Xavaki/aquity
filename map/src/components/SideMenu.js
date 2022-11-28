@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material'
 import FiltreTemporal from './FiltreTemporal'
 import React from 'react'
 import FiltreBarri from './FiltreBarri'
+import FiltreCategoria from './FiltreCategoria'
 import AvgConsum from './AvgConsum'
 
 const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color, ...props }) => {
@@ -19,6 +20,7 @@ const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color, 
                     </Typography>
                     <FiltreBarri />
                     <FiltreTemporal sliderValue={sliderValue} changeSliderValue={changeSliderValue} />
+                    <FiltreCategoria />
                 </div>
                 <AvgConsum
                     consum2Color={consum2Color}

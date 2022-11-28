@@ -96,6 +96,7 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
     const [districts, setDistricts] = useState([])
     const [neighborhoods, setNeighborhoods] = useState([])
     const [households, setHouseholds] = useState([])
+    const [barris, setBarris] = useState({})
 
     const [consRange, setConsRange] = useState([])
     const [timeStep, setTimeStep] = useState(1)
@@ -114,12 +115,15 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
             let neighborhoods = dist_geojson.features.filter(f => f.properties.SCONJ_DESC === "Barri")
             let others = APIData.others;
             let districts = dist_geojson.features.filter(f => f.properties.SCONJ_DESC === "Districte")
-            let households = hh_geojson
+            let households = hh_geojson;
+            let barris = APIData.barris;
             let { minc, maxc } = others;
 
             setDistricts(districts)
             setNeighborhoods(neighborhoods)
             setHouseholds(households)
+            setBarris(barris)
+            console.log(barris)
             setConsRange([minc, maxc])
 
             computeAvgPatroConsum(households);
