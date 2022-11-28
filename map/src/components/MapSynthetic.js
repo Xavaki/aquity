@@ -209,7 +209,7 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
             <MapContainer
                 // ref={mapRef}
                 style={{ width: "100%", height: "100%" }}
-                center={{ lat: "41.387040", lng: " 2.170115" }}
+                center={{ lat: "41.4100", lng: " 2.2030" }}
                 zoom={14}
                 minZoom={12}
                 zoomControl={false}
