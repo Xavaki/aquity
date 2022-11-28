@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Tooltip, Typography } from '@mui/material'
 import FiltreTemporal from './FiltreTemporal'
 import React from 'react'
 import FiltreBarri from './FiltreBarri'
@@ -60,20 +60,26 @@ const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color, 
                     {menuContent()}
                 </div>
             </Box>
-            <div style={{
-                position: "fixed",
-                borderRadius: "3%",
-                boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
-                backgroundColor: "white",
-                backgroundImage: `linear-gradient(to right, ${consColormap.join(', ')})`,
-                width: "300px",
-                zIndex: 1000,
-                height: "30px",
-                top: "80px",
-                left: "480px"
-            }}>
+            <Tooltip title={Math.round(props.consRange[1])} placement="bottom-end">
+                <Tooltip title={props.consRange[0]} placement="bottom-start">
+                    <div
+                        onMouseEnter={() => console.log("heeeeyya")}
+                        style={{
+                            position: "fixed",
+                            borderRadius: "4px",
+                            boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+                            backgroundColor: "white",
+                            backgroundImage: `linear-gradient(to right, ${consColormap.join(', ')})`,
+                            width: "300px",
+                            zIndex: 1000,
+                            height: "20px",
+                            top: "80px",
+                            left: "480px"
+                        }}>
 
-            </div>
+                    </div>
+                </Tooltip>
+            </Tooltip>
         </div >
     )
 }

@@ -204,6 +204,7 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
                 avgPatroConsum={computeAvgPatroConsum(filteredHouseholds(households.features))}
                 maxRentaRange={maxRentaRange}
                 filterByRenta={filterByRenta}
+                consRange={consRange}
             />}
             <MapContainer
                 // ref={mapRef}
