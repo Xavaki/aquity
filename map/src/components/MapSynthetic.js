@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { TileLayer, GeoJSON, MapContainer, useMapEvent, Marker } from 'react-leaflet';
+import { TileLayer, GeoJSON, MapContainer, useMapEvent, Marker, Popup } from 'react-leaflet';
 // import { useMapEvent } from 'react-leaflet/hooks'
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import callApi from './api';
 import SideMenu from './SideMenu';
 import { zip } from 'underscore'
+import Chart from './Chart';
+import { Typography } from '@mui/material';
 
 const interpolate = require('color-interpolate');
 let consColormap = ['#1f005c', '#ffb56b'];
@@ -28,7 +30,7 @@ const icon = (color) => L.divIcon({
     className: "my-custom-pin",
     iconAnchor: [0, 0],
     labelAnchor: [0, 0],
-    popupAnchor: [0, 0],
+    popupAnchor: [4, 0],
     html: `<span style="${markerHtmlStyles(color)}" />`
 })
 
@@ -67,9 +69,23 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
     let consum2Color = (cons) => colormap((cons + 10) / consRange[1])
 
     const hhData = () => {
+        console.log(households.features[0])
         return households.features.map((data, id) => {
             let consum = data.properties.patro_consum[timeStep - 1]
-            return < Marker position={data.geometry.coordinates.reverse()} icon={icon(consum2Color(consum))} />
+            return (
+                < Marker position={data.geometry.coordinates.reverse()} icon={icon(consum2Color(consum))}>
+                    <Popup maxWidth={1000}>
+                        <div style={{ width: "400px", height: "300px", backgroundColor: "white" }}>
+                            <Typography variant="body3">(adreça)</Typography>
+                            <br></br>
+                            <Typography variant="body3">{data.properties.NOM_BARRI}</Typography>
+                            <br></br>
+                            <Typography variant="body3" style={{ fontWeight: "bold" }}>consum total diari (l): {data.properties.total_cons}</Typography>
+                            <Chart rawData={data.properties.patro_consum} height={"200px"} width={"300px"} />
+                        </div>
+                    </Popup>
+                </Marker>
+            )
         }
         )
     }

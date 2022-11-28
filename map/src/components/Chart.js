@@ -35,12 +35,17 @@ const Chart = (props) => {
     return (< div style={{ position: 'relative' }}>
         <div style={{
             position: 'absolute',
-            width: '100%',
-            height: '250px',
+            width: props.width ? props.width : '100%',
+            height: props.height ? props.height : '250px',
         }}>
             <ResponsiveLine
                 data={data}
-                margin={{ top: 10, right: 5, bottom: 20, left: 30 }}
+                margin={{
+                    top: 10,
+                    right: 5,
+                    bottom: 20,
+                    left: props.height ? 25 : 30
+                }}
                 // margin={0}
                 xScale={{ type: 'point' }}
                 yScale={{
