@@ -26,12 +26,17 @@ const clickable = [
 const FiltreCategoria = (props) => {
 
 
+    let resetFilters = () => {
+        props.filterByRenta(props.maxRentaRange)
+        setValue1(props.maxRentaRange)
+    }
+    const [value1, setValue1] = useState(props.maxRentaRange);
+
     let [selected, setSelected] = useState("Cap")
     let [listHidden, setListHidden] = useState(true);
 
     let rendaFilter = () => {
         const minDistance = 2000;
-        const [value1, setValue1] = useState(props.maxRentaRange);
         const [changedValue, setChangedValue] = useState(props.maxRentaRange)
 
         const handleChange1 = (event, newValue, activeThumb) => {
@@ -130,6 +135,9 @@ const FiltreCategoria = (props) => {
                             if (clickable.includes(c)) {
                                 setListHidden(true)
                                 setSelected(c)
+                                if (c === 'Cap') {
+                                    resetFilters()
+                                }
                             }
                         }}
                     >{c}</Typography>)}
