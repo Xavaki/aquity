@@ -1,6 +1,7 @@
 import { Button, Slider, Typography } from '@mui/material'
 import React, { useState } from 'react'
 
+var numeral = require('numeral')
 
 const categories = [
     "Cap",
@@ -20,7 +21,7 @@ const categories = [
 const clickable = [
     "Cap",
     "Renda familiar mitjana",
-    "Consum total diari",
+    // "Consum total diari",
 ]
 
 const FiltreCategoria = (props) => {
@@ -72,6 +73,8 @@ const FiltreCategoria = (props) => {
                     min={props.maxRentaRange[0]}
                     max={props.maxRentaRange[1]}
                     onChangeCommitted={(event, newValue) => setChangedValue(newValue)}
+                    valueLabelFormat={v => numeral(v).format('0,0')}
+
                 />
                 <Button
                     color="santmarti"
@@ -130,7 +133,7 @@ const FiltreCategoria = (props) => {
                         marginTop: 4,
                         marginLeft: 5,
                         cursor: clickable.includes(c) ? "pointer" : null,
-                        color: clickable.includes(c) ? "rbg(112,112,112)" : "rgb(200,200,200)"
+                        color: clickable.includes(c) ? "rbg(112,112,112)" : "rgb(180,180,180)"
                     }}
                         className="hoverwhite"
                         onClick={() => {

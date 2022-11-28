@@ -27,7 +27,7 @@ let theme = createTheme({
       main: "#db2425"
     },
     santmarti: {
-      main: "#00563c",
+      main: "#71aa8b",
       contrastText: "whitesmoke"
     }
   },

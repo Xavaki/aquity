@@ -7,11 +7,11 @@ import AvgConsum from './AvgConsum'
 
 const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color, ...props }) => {
 
-    let smcolor = "#00563c";
+    let smcolor = "#71aa8b";
 
     let menuContent = () => {
         return (
-            <div style={{ width: "100%" }}>
+            <div style={{ width: "100%", }}>
                 <div style={{ width: "100%" }}>
                     <Typography variant='h4'
                         style={{
@@ -44,6 +44,7 @@ const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color, 
             backgroundColor: "white",
             overflowY: "scroll",
             boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+
         }}>
             <Box
                 sx={{ width: 400, marginTop: 11 }}
@@ -63,7 +64,6 @@ const SideMenu = ({ sliderValue, changeSliderValue, consColormap, consum2Color, 
             <Tooltip title={Math.round(props.consRange[1])} placement="bottom-end">
                 <Tooltip title={props.consRange[0]} placement="bottom-start">
                     <div
-                        onMouseEnter={() => console.log("heeeeyya")}
                         style={{
                             position: "fixed",
                             borderRadius: "4px",

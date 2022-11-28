@@ -79,7 +79,6 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
             let barriRenta = barris[barrID].RENTA
             return (barriRenta >= filteredRentaRange[0] && barriRenta <= filteredRentaRange[1])
         })
-        console.log(rentaRangeFiltered.length)
         return rentaRangeFiltered
     }
 

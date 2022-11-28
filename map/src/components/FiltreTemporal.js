@@ -5,6 +5,17 @@ const FiltreTemporal = (props) => {
 
     let [listHidden, setListHidden] = useState(true);
 
+    let timeScales = [
+        '1 setmana',
+        '2 setmanes',
+        '1 mes',
+        '1 trimestre',
+        '...',
+        '...',
+        '...',
+        '...',
+    ]
+
     return (
         <div>
             <Typography variant='body2' style={{
@@ -48,10 +59,17 @@ const FiltreTemporal = (props) => {
                         transitionDuration: "0.2s",
                         borderRadius: "4px",
                         transitionProperty: "height",
+                        transform: "translate(-60%, 0)",
+                        overflowY: "scroll",
                     }}
-                        onMouseLeave={() => setListHidden(true)}    
+                        onMouseLeave={() => setListHidden(true)}
                     >
-
+                        {timeScales.map(b => <Typography style={{
+                            display: "block",
+                            marginTop: 4,
+                            marginLeft: 5,
+                            color: "rgb(180, 180, 180)"
+                        }} variant="body3">{b}</Typography>)}
                     </div>
                 </div>
             </div>
@@ -81,6 +99,7 @@ const FiltreTemporal = (props) => {
                 style={{
                     width: "100%",
                     marginLeft: 4,
+                    zIndex: 1,
                 }}
                 marks
                 step={1}

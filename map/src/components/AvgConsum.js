@@ -17,7 +17,11 @@ const AvgConsum = (props) => {
             }}>
                 dels domicilis en pantalla
             </Typography>
-            <Chart rawData={props.avgPatroConsum} />
+            {props.avgPatroConsum.length ?
+                <Chart rawData={props.avgPatroConsum} />
+                :
+                <Typography variant="body3" style={{ marginTop: 10, color: "rgb(180, 180, 180)" }}>No hi ha resultats que coincideixin amb la cerca</Typography>
+            }
         </div>
     )
 }

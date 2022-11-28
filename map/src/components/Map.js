@@ -7,7 +7,7 @@ import callApi from './api';
 import ZoneInfo from './ZoneInfo';
 import { select } from 'underscore';
 
-const palette = ['#19439c', '#4f7cb6', '#61a0c4', '#5ea9c6', '#4898bc', '#b1d2b2', '#71aa8b', '#3f886b', '#176d51', '#00563c']
+const palette = ['#19439c', '#4f7cb6', '#61a0c4', '#5ea9c6', '#4898bc', '#b1d2b2', '#00563c', '#3f886b', '#176d51', '#71aa8b']
 const muniPalette = ['#94003a', '#900c46', '#8b1551', '#851b5d', '#7f2169', '#772676', '#6e2b82'];
 
 const distIds = {
