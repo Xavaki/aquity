@@ -7,7 +7,7 @@ import callApi from './api';
 import SideMenu from './SideMenu';
 import { zip } from 'underscore'
 import Chart from './Chart';
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 
 const interpolate = require('color-interpolate');
 let consColormap = ['#1f005c', '#ffb56b'];
@@ -205,6 +205,14 @@ const MapSynthetic = ({ setSynthDataLoadning }) => {
                 filterByRenta={filterByRenta}
                 consRange={consRange}
             />}
+            <div style={{
+                zIndex: 9000,
+                position: "absolute",
+                top: "90px",
+                right: "30px"
+            }}>
+                <Button variant='contained' size='large' href='/'>Demostració dades reals</Button>
+            </div>
             <MapContainer
                 // ref={mapRef}
                 style={{ width: "100%", height: "100%" }}

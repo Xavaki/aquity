@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import callApi from './api';
 import ZoneInfo from './ZoneInfo';
+import { Button } from '@mui/material';
 import { select } from 'underscore';
 
 const palette = ['#19439c', '#4f7cb6', '#61a0c4', '#5ea9c6', '#4898bc', '#b1d2b2', '#00563c', '#3f886b', '#176d51', '#71aa8b']
@@ -143,6 +144,14 @@ const MapView = ({ setOfficesLoading }) => {
             {selectedZone !== null &&
                 <ZoneInfo zone={getSelectedZone()} open={districtClicked} closeDistrict={() => clickZone(false)} />
             }
+            <div style={{
+                zIndex: 9000,
+                position: "absolute",
+                top: "90px",
+                right: "30px"
+            }}>
+                <Button variant='contained' size='large' href='/sintetic/'>Demostració dades sintètiques</Button>
+            </div>
             <MapContainer
                 // ref={mapRef}
                 style={{ width: "100%", height: "100%" }}
